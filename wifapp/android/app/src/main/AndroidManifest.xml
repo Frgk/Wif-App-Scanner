@@ -19,7 +19,7 @@
     </queries>
 
    <application
-        android:label="wifapp"
+        android:label="Wif'App"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

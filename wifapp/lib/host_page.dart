@@ -196,7 +196,7 @@ Column(
                 Text( host.been_scanned
                   ? "[*] Already scanned"
                     : "" ,
-              
+
 
                   style : TextStyle(
                       color: Colors.green.shade900,
