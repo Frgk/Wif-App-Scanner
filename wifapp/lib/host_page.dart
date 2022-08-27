@@ -32,73 +32,87 @@ class HostPageState extends State<HostPage> {
 
   Future<void> portscan(HostInfo host) async{
 
-    host.ports.clear();
+    //host.ports.clear();
 
     log(widget.first_port.toString());
     log(widget.last_port.toString());
 
 
-    if( widget.scan_mode == 0){
-      PortScanner.scanPortsForSingleDevice(
-        host.ip,
-        // Scan will start from this port.
-        //startPort: 1,
-        endPort: 9400,
-        progressCallback: (progress) {
-          log('Progress for port discovery : $progress');
+    if (!host.been_scanned) {
+      if (widget.scan_mode == 0) {
+        PortScanner.scanPortsForSingleDevice(
+          host.ip,
+          // Scan will start from this port.
+          //startPort: 1,
+          endPort: 9400,
+          progressCallback: (progress) {
+            log('Progress for port discovery : $progress');
+          },
+        ).listen(
+              (activeHost) {
+            final OpenPort deviceWithOpenPort = activeHost.openPort[0];
 
-        },
-      ).listen(
-            (activeHost) {
-          final OpenPort deviceWithOpenPort = activeHost.openPort[0];
+            if (deviceWithOpenPort.isOpen) {
+              log('Found open port: ${deviceWithOpenPort.port}');
 
-          if (deviceWithOpenPort.isOpen) {
-            log('Found open port: ${deviceWithOpenPort.port}');
+              setState(() {
+                host.ports.add(deviceWithOpenPort.port);
+              });
+            }
+          },
+          onDone: () {
+            print('Port Scan from 1 to 9400 completed');
 
-            setState((){
+            log(host.ports.toString());
+            host.been_scanned = true;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PortsPage(host: host,
+                first_port: widget.first_port,
+                last_port: widget.last_port,
+                scan_mode: widget.scan_mode,
+                ports_list: widget.ports_list,)),
+            );
+          },
+        );
+      } else {
+        PortScanner.customDiscover(
+            host.ip, portList: widget.ports_list.map(int.parse).toList())
+            .listen(
+              (activeHost) {
+            final OpenPort deviceWithOpenPort = activeHost.openPort[0];
 
-              host.ports.add(deviceWithOpenPort.port);
-            });
+            if (deviceWithOpenPort.isOpen) {
+              print('Found open port: ${deviceWithOpenPort.port}');
 
-          }
-        },
-        onDone: () {
-          print('Port Scan from 1 to 9400 completed');
-
-          log(host.ports.toString());
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PortsPage(host: host, first_port: widget.first_port, last_port: widget.last_port, scan_mode: widget.scan_mode, ports_list: widget.ports_list,)),
-          );
-        },
+              setState(() {
+                host.ports.add(deviceWithOpenPort.port);
+              });
+            }
+          },
+          onDone: () {
+            print('Port Scan from 1 to 9400 completed');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PortsPage(host: host,
+                first_port: widget.first_port,
+                last_port: widget.last_port,
+                scan_mode: widget.scan_mode,
+                ports_list: widget.ports_list,)),
+            );
+          },
+        );
+      }
+    }else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PortsPage(host: host, first_port: widget.first_port, last_port: widget.last_port, scan_mode: widget.scan_mode, ports_list: widget.ports_list,)),
       );
-
-    } else {
-      PortScanner.customDiscover(host.ip, portList: widget.ports_list.map(int.parse).toList()).listen(
-            (activeHost) {
-          final OpenPort deviceWithOpenPort = activeHost.openPort[0];
-
-          if (deviceWithOpenPort.isOpen) {
-            print('Found open port: ${deviceWithOpenPort.port}');
-
-            setState((){
-
-              host.ports.add(deviceWithOpenPort.port);
-            });
-
-          }
-        },
-        onDone: () {
-          print('Port Scan from 1 to 9400 completed');
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PortsPage(host: host, first_port: widget.first_port, last_port: widget.last_port, scan_mode: widget.scan_mode, ports_list: widget.ports_list,)),
-          );
-        },
-      );
-      
-      
     }
+
+
+      
+
 
 
   }
@@ -179,6 +193,17 @@ Column(
                 ),
               ),
               children: [
+                Text( host.been_scanned
+                  ? "[*] Already scanned"
+                    : "" ,
+              
+
+                  style : TextStyle(
+                      color: Colors.green.shade900,
+                      fontSize: MediaQuery.of(context).size.aspectRatio * 30
+
+                  ),
+                ),
                 ElevatedButton(
                   onPressed: () async{
 

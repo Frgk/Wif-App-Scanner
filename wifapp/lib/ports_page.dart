@@ -148,7 +148,7 @@ class PortsPageState extends State<PortsPage> {
 
               )
 
-              : Text("[X] No ports found :/",
+              : Text("[x] No ports found :/",
                 style : TextStyle(
                     color: Colors.white,
                     fontSize: MediaQuery.of(context).size.aspectRatio * 40

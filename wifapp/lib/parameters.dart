@@ -21,7 +21,7 @@ class ParametersPage extends StatefulWidget{
 
 class ParametersPageState extends State<ParametersPage>{
 
-  final Uri _url = Uri.parse('https://flutter.dev');
+  final Uri _url = Uri.parse('https://github.com/Frgk/Wif-App-Scanner');
 
 
   final first_subnet_controller = TextEditingController();
@@ -334,7 +334,7 @@ class ParametersPageState extends State<ParametersPage>{
 
 
             value: scan_mode.toString(),
-            icon: Icon(Icons.arrow_drop_down_circle_outlined,
+            icon: Icon(Icons.arrow_drop_down_sharp,
             color: Colors.white,),
 
             dropdownColor: Colors.black,
