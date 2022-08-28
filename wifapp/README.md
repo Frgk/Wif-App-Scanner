@@ -1,16 +1,15 @@
-# wifapp
+# Wif'App
 
-A new Flutter project.
+An application used to scan the wifi you are connected on, and know th IP address of the hosts. For more details, you can scan the ports of the host you want.
 
-## Getting Started
+## The application works on :
 
-This project is a starting point for a Flutter application.
+|Android|iOS|Windows|Web|
+|:-----:|:-:|:-----:|:-:|
+|YES|NO|NO|NO|
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+|Home|Parameters|Hosts|Details|
+|:--:|:--------:|:---:|:-----:|
+|<img src="/screenshots/Screenshot_1.png" width="250">|<img src="/screenshots/Screenshot_2.png" width="250">|<img src="/screenshots/Screenshot_3.png" width="250">|<img src="/screenshots/Screenshot_4.png" width="250">|
